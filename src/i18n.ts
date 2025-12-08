@@ -1,15 +1,14 @@
 import {notFound} from 'next/navigation';
 import {getRequestConfig} from 'next-intl/server';
-
-// Can be imported from a shared config
-const locales = ['en', 'af'];
+import {routing} from './routing'; // <--- Import the single source of truth
 
 export default getRequestConfig(async ({requestLocale}) => {
   // This typically corresponds to the `[locale]` segment
   let locale = await requestLocale;
 
   // Validate that the incoming `locale` parameter is valid
-  if (!locale || !locales.includes(locale as any)) {
+  // We use `routing.locales` here so it never goes out of sync with middleware
+  if (!locale || !routing.locales.includes(locale as any)) {
     notFound();
   }
 
