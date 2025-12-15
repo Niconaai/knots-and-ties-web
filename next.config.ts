@@ -1,12 +1,23 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from 'next-intl/plugin';
 
-// Architect's Note: explicitly pointing to our i18n file
-// to fix the "Could not locate request configuration module" error.
+// 1. Configure Internationalization
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // 2. Enable Styled Components for Sanity
+  compiler: {
+    styledComponents: true,
+  },
+  // 3. Allow Sanity Images (We will need this for the frontend later)
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
+  },
 };
 
 export default withNextIntl(nextConfig);

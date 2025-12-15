@@ -1,6 +1,47 @@
 {
-  "HomePage": {
-    "title": "Knots & Ties",
-    "subtitle": "Handgemaak in Suid-Afrika"
+  "Home": {
+    "heroTitle": "Die Kuns van die Knoop",
+    "heroSubtitle": "Handgemaak in Suid-Afrika vir die moderne heer.",
+    "cta": "Betree die Winkel",
+    "cat_skinny": "Die Smal Das",
+    "cat_standard": "Die Standaard",
+    "cat_bow": "Die Strikdas",
+    "storyTitle": "Geweef met Doel",
+    "storyExcerpt": "Ons maak nie net dasse nie. Ons skep erfstukke van die beste plaaslike materiaal.",
+    "readMore": "Lees Ons Storie"
+  },
+  "Navbar": {
+    "shop": "Winkel",
+    "story": "Ons Storie",
+    "cart": "Mandjie"
+  },
+  "Footer": {
+    "description": "Handgemaak in Suid-Afrika met slegs die beste plaaslike materiaal. Elke knoop is 'n belofte van kwaliteit.",
+    "shop": "Winkel",
+    "allTies": "Alle Dasse",
+    "skinny": "Smal Dasse",
+    "bow": "Strikdasse",
+    "company": "Maatskappy",
+    "story": "Ons Storie",
+    "contact": "Kontak",
+    "newsletter": "Bly op Hoogte",
+    "subscribe": "Teken In",
+    "emailPlaceholder": "E-pos adres",
+    "rights": "Alle regte voorbehou.",
+    "privacy": "Privaatheidsbeleid",
+    "terms": "Diensbepalings"
+  },
+  "Shop": {
+    "title": "Die Versameling",
+    "subtitle": "Elke das is uniek, handgemaak en geskep met karakter.",
+    "view": "Kyk"
+  },
+  "About": {
+    "title": "Ons Storie",
+    "subtitle": "Van die Karoo tot jou kraag.",
+    "p1": "Knots of Ties het begin met 'n eenvoudige idee: massaproduksie het geen siel nie. In 'n wêreld van vinnige mode, wou ons stadiger beweeg.",
+    "p2": "Elke das word handgemaak in ons klein ateljee in Suid-Afrika. Ons soek materiaal wat 'n storie vertel—linne wat asemhaal, katoen wat sagter word met tyd.",
+    "promiseTitle": "Die Belofte",
+    "promiseText": "As 'n knoop ooit loskom, stuur dit terug. Ons maak hierdie dasse om 'n leeftyd te hou."
   }
 }

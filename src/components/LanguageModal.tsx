@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, usePathname } from '@/routing'; // Use our typed navigation
+import { useRouter, usePathname } from '@/routing'; 
 import Cookies from 'js-cookie'; 
 
 export default function LanguageModal() {
@@ -10,7 +10,6 @@ export default function LanguageModal() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check if the user has already made a choice
     const hasConsent = Cookies.get('NEXT_LOCALE');
     if (!hasConsent) {
       setIsOpen(true);
@@ -18,13 +17,10 @@ export default function LanguageModal() {
   }, []);
 
   const handleSelect = (locale: 'en' | 'af') => {
-    // 1. Set the cookie so this doesn't appear again
     Cookies.set('NEXT_LOCALE', locale, { expires: 365 });
     
-    // 2. Close the modal
     setIsOpen(false);
 
-    // 3. Switch the URL to the selected language
     router.replace(pathname, { locale });
   };
 
@@ -37,11 +33,18 @@ export default function LanguageModal() {
         {/* Brand Logo or Text */}
         <div className="space-y-2">
           <h2 className="text-3xl font-serif text-zinc-900">Knots of Ties</h2>
-          <p className="text-zinc-600 italic">Select your language / Kies jou taal</p>
+          <p className="text-zinc-600 italic">Taalvoorkeur / Language Preference</p>
         </div>
 
         {/* Buttons */}
         <div className="grid gap-4">
+          <button
+            onClick={() => handleSelect('af')}
+            className="w-full py-4 border-2 border-zinc-900 hover:bg-zinc-900 hover:text-white transition-all uppercase tracking-widest font-bold"
+          >
+            Afrikaans
+          </button>
+
           <button
             onClick={() => handleSelect('en')}
             className="w-full py-4 border-2 border-zinc-900 hover:bg-zinc-900 hover:text-white transition-all uppercase tracking-widest font-bold"
@@ -49,12 +52,6 @@ export default function LanguageModal() {
             English
           </button>
           
-          <button
-            onClick={() => handleSelect('af')}
-            className="w-full py-4 border-2 border-zinc-900 hover:bg-zinc-900 hover:text-white transition-all uppercase tracking-widest font-bold"
-          >
-            Afrikaans
-          </button>
         </div>
         
       </div>

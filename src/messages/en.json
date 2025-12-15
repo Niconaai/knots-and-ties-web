@@ -1,6 +1,47 @@
 {
-  "HomePage": {
-    "title": "Knots & Ties",
-    "subtitle": "Handmade in South Africa"
+  "Home": {
+    "heroTitle": "The Art of the Knot",
+    "heroSubtitle": "Handmade in South Africa for the modern gentleman.",
+    "cta": "Enter the Shop",
+    "cat_skinny": "The Skinny",
+    "cat_standard": "The Standard",
+    "cat_bow": "The Bow Tie",
+    "storyTitle": "Woven with Purpose",
+    "storyExcerpt": "We don't just make ties. We craft heirlooms from the finest local fabrics.",
+    "readMore": "Read Our Story"
+  },
+  "Navbar": {
+    "shop": "Shop",
+    "story": "Our Story",
+    "cart": "Cart"
+  },
+  "Footer": {
+    "description": "Handmade in South Africa using only the finest locally sourced fabrics. Each knot is a promise of quality.",
+    "shop": "Shop",
+    "allTies": "All Ties",
+    "skinny": "Skinny Ties",
+    "bow": "Bow Ties",
+    "company": "Company",
+    "story": "Our Story",
+    "contact": "Contact",
+    "newsletter": "Stay in the Loop",
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Email address",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "Shop": {
+    "title": "The Collection",
+    "subtitle": "Each tie is unique, handmade, and crafted for character.",
+    "view": "View"
+  },
+  "About": {
+    "title": "Our Story",
+    "subtitle": "From the Karoo to your collar.",
+    "p1": "Knots of Ties began with a simple idea: mass-produced accessories lack soul. In a world of fast fashion, we wanted to slow down.",
+    "p2": "Every tie is handmade in our small studio in South Africa. We source fabrics that tell a story—linens that breathe, cottons that soften with age.",
+    "promiseTitle": "The Promise",
+    "promiseText": "If a knot ever comes loose, or a stitch gives way, send it back. We build these to last a lifetime."
   }
 }
