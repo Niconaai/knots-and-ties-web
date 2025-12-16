@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/routing';
-import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { Facebook, Instagram } from 'lucide-react';
 import { useTranslations } from 'next-intl'; // <--- Import
 
 export default function Footer() {
@@ -23,7 +23,6 @@ export default function Footer() {
                {/* Icons stay same */}
                <a href="#" className="hover:text-accent-rust transition"><Instagram className="w-5 h-5" /></a>
                <a href="#" className="hover:text-accent-rust transition"><Facebook className="w-5 h-5" /></a>
-               <a href="#" className="hover:text-accent-rust transition"><Twitter className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -64,7 +63,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-zinc-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-zinc-500">
-          <p>© {currentYear} Knots of Ties. {t('rights')}</p>
+          <p>© {currentYear} Knots of Ties. {t('rights')} {t('maintained')} <Link href="https://www.nicolabsdigital.co.za/" className="hover:text-white">{t('nicolabs')}.</Link></p> 
           <div className="flex gap-6 mt-4 md:mt-0">
             <Link href="/" className="hover:text-white">{t('privacy')}</Link>
             <Link href="/" className="hover:text-white">{t('terms')}</Link>

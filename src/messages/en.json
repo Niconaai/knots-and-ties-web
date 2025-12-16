@@ -1,13 +1,13 @@
 {
   "Home": {
-    "heroTitle": "The Art of the Knot",
+    "heroTitle": "The Art of the Tie",
     "heroSubtitle": "Handmade in South Africa for the modern gentleman.",
     "cta": "Enter the Shop",
-    "cat_skinny": "The Skinny",
-    "cat_standard": "The Standard",
+    "cat_skinny": "The Skinny-tie",
+    "cat_standard": "The Standard-tie",
     "cat_bow": "The Bow Tie",
     "storyTitle": "Woven with Purpose",
-    "storyExcerpt": "We don't just make ties. We craft heirlooms from the finest local fabrics.",
+    "storyExcerpt": "We don't just make ties. We craft heirlooms from the finest quality fabrics.",
     "readMore": "Read Our Story"
   },
   "Navbar": {
@@ -16,12 +16,12 @@
     "cart": "Cart"
   },
   "Footer": {
-    "description": "Handmade in South Africa using only the finest locally sourced fabrics. Each knot is a promise of quality.",
+    "description": "Handmade in South Africa using only the finest quality sourced fabrics. Each stitch is a promise of quality.",
     "shop": "Shop",
     "allTies": "All Ties",
     "skinny": "Skinny Ties",
     "bow": "Bow Ties",
-    "company": "Company",
+    "company": "More about us",
     "story": "Our Story",
     "contact": "Contact",
     "newsletter": "Stay in the Loop",
@@ -29,7 +29,9 @@
     "emailPlaceholder": "Email address",
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "maintained": "Maintaned by",
+    "nicolabs": "Nicolabs Digital"
   },
   "Shop": {
     "title": "The Collection",
@@ -38,10 +40,20 @@
   },
   "About": {
     "title": "Our Story",
-    "subtitle": "From the Karoo to your collar.",
-    "p1": "Knots of Ties began with a simple idea: mass-produced accessories lack soul. In a world of fast fashion, we wanted to slow down.",
-    "p2": "Every tie is handmade in our small studio in South Africa. We source fabrics that tell a story—linens that breathe, cottons that soften with age.",
+    "subtitle": "Handmade for your collar.",
+    "p1": "nots of Ties began with a simple idea: mass-produced accessories lack soul. In a world of fast fashion, we wanted to slow down.",
+    "p2": "Every tie is handmade in our small studio in Brits, South Africa. We source fabrics that would last a long time - designs that breathe, cottons that soften with age.",
     "promiseTitle": "The Promise",
-    "promiseText": "If a knot ever comes loose, or a stitch gives way, send it back. We build these to last a lifetime."
+    "promiseText": "If a stitch ever comes loose, send it back. We build products to last a lifetime."
+  },
+  "Cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "continue": "Continue Shopping",
+    "qty": "Qty",
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "shippingNote": "Shipping & taxes calculated at checkout.",
+    "checkout": "Checkout"
   }
 }

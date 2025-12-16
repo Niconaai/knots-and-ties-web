@@ -5,15 +5,14 @@ export const product = defineType({
   title: 'Product (Made-to-Order)',
   type: 'document',
   fields: [
-    // 1. Internal Name (For Admin sanity only)
+    // 1. Internal Name
     defineField({
       name: 'name',
       title: 'Internal Name',
       type: 'string',
-      description: 'Internal reference only (e.g. "Floral 01")',
     }),
 
-    // 2. Bilingual Title (Public)
+    // 2. Bilingual Title
     defineField({
       name: 'title',
       title: 'Public Title',
@@ -24,62 +23,95 @@ export const product = defineType({
       ],
     }),
 
-    // 3. URL Slug (SEO)
+    // 3. Slug
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {
-        source: 'title.en', // Auto-generate from English title
-        maxLength: 96,
-      },
+      options: { source: 'title.en' },
     }),
 
-    // 4. Base Price (ZAR)
+    // 4. Base Price
     defineField({
       name: 'price',
       title: 'Base Price (ZAR)',
       type: 'number',
-      validation: (Rule) => Rule.required().min(100),
     }),
 
-    // 5. Bilingual Story (The "Paper & Ink" Content)
+    // 5. COLOR VARIANTS (New Core Logic)
+    defineField({
+      name: 'variants',
+      title: 'Color Variants',
+      type: 'array',
+      description: 'Add a variant for each color/print option (e.g. Green, Blue).',
+      of: [{
+        type: 'object',
+        fields: [
+          defineField({
+            name: 'colorName',
+            title: 'Color Name (e.g. Sage Green)',
+            type: 'string',
+            validation: (Rule) => Rule.required(),
+          }),
+          defineField({
+            name: 'colorHex',
+            title: 'Color Hex Code (for the Swatch)',
+            type: 'string',
+            description: 'e.g. #8A9A5B for green. Google "Color Picker" to find codes.',
+            validation: (Rule) => Rule.required().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+              name: 'hex',
+              invert: false
+            }),
+          }),
+          defineField({
+            name: 'images',
+            title: 'Variant Images',
+            type: 'array',
+            of: [{ type: 'image', options: { hotspot: true } }],
+            validation: (Rule) => Rule.required().min(1),
+          }),
+          defineField({
+            name: 'active',
+            title: 'Active?',
+            type: 'boolean',
+            initialValue: true,
+            description: 'Turn off to hide this color from the store.',
+          }),
+        ],
+        preview: {
+          select: {
+            title: 'colorName',
+            subtitle: 'active',
+            media: 'images.0'
+          },
+          prepare(selection) {
+            const { title, subtitle, media } = selection
+            return {
+              title: title,
+              subtitle: subtitle ? 'Active' : 'Inactive',
+              media: media
+            }
+          }
+        }
+      }],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+
+    // 6. Fabric Story
     defineField({
       name: 'fabricStory',
       title: 'Fabric Story',
       type: 'object',
       fields: [
-        { 
-          name: 'en', 
-          title: 'English Story', 
-          type: 'array', 
-          of: [{ type: 'block' }] // Rich Text
-        },
-        { 
-          name: 'af', 
-          title: 'Afrikaans Story', 
-          type: 'array', 
-          of: [{ type: 'block' }] 
-        },
+        { name: 'en', title: 'English Story', type: 'array', of: [{ type: 'block' }] },
+        { name: 'af', title: 'Afrikaans Story', type: 'array', of: [{ type: 'block' }] },
       ],
     }),
 
-    // 6. Product Images (4:5 Ratio preferred)
-    defineField({
-      name: 'images',
-      title: 'Product Images',
-      type: 'array',
-      of: [{ 
-        type: 'image',
-        options: { hotspot: true } // Crucial for mobile crops
-      }],
-      validation: (Rule) => Rule.required().min(1),
-    }),
-
-    // 7. Variants (The "Made-to-Order" Logic)
+    // 7. Technical Options (Widths, etc)
     defineField({
       name: 'options',
-      title: 'Product Options',
+      title: 'Technical Options',
       type: 'array',
       of: [{
         type: 'object',

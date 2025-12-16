@@ -15,7 +15,7 @@ export default async function ShopPage({
   const products = await sanityFetch({ query: PRODUCTS_QUERY });
 
   return (
-    <main className="min-h-screen px-6 py-12 max-w-7xl mx-auto">
+    <main className="min-h-screen px-6 pt-24 md:pt-40 pb-12 max-w-7xl mx-auto">
       
       {/* Page Header */}
       <div className="mb-16 space-y-4 text-center">

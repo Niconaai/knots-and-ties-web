@@ -1,13 +1,13 @@
 {
   "Home": {
-    "heroTitle": "Die Kuns van die Knoop",
-    "heroSubtitle": "Handgemaak in Suid-Afrika vir die moderne heer.",
-    "cta": "Betree die Winkel",
-    "cat_skinny": "Die Smal Das",
-    "cat_standard": "Die Standaard",
-    "cat_bow": "Die Strikdas",
-    "storyTitle": "Geweef met Doel",
-    "storyExcerpt": "Ons maak nie net dasse nie. Ons skep erfstukke van die beste plaaslike materiaal.",
+    "heroTitle": "Die Kuns van die Das",
+    "heroSubtitle": "Handgemaak in Suid-Afrika vir die moderne man.",
+    "cta": "Besoek die Winkel",
+    "cat_skinny": "Die Smal-das",
+    "cat_standard": "Die Standaard-das",
+    "cat_bow": "Die Strik-das",
+    "storyTitle": "Geweef met 'n Doel",
+    "storyExcerpt": "Ons maak nie net dasse nie. Ons skep erfstukke van die beste gehalte materiaal.",
     "readMore": "Lees Ons Storie"
   },
   "Navbar": {
@@ -16,12 +16,12 @@
     "cart": "Mandjie"
   },
   "Footer": {
-    "description": "Handgemaak in Suid-Afrika met slegs die beste plaaslike materiaal. Elke knoop is 'n belofte van kwaliteit.",
+    "description": "Handgemaak in Suid-Afrika met slegs die beste materiaal. Elke steek is 'n belofte van kwaliteit.",
     "shop": "Winkel",
     "allTies": "Alle Dasse",
     "skinny": "Smal Dasse",
     "bow": "Strikdasse",
-    "company": "Maatskappy",
+    "company": "Meer oor Ons",
     "story": "Ons Storie",
     "contact": "Kontak",
     "newsletter": "Bly op Hoogte",
@@ -29,19 +29,31 @@
     "emailPlaceholder": "E-pos adres",
     "rights": "Alle regte voorbehou.",
     "privacy": "Privaatheidsbeleid",
-    "terms": "Diensbepalings"
+    "terms": "Diensbepalings",
+    "maintained": "Onderhou deur",
+    "nicolabs": "Nicolabs Digital"
   },
   "Shop": {
     "title": "Die Versameling",
     "subtitle": "Elke das is uniek, handgemaak en geskep met karakter.",
-    "view": "Kyk"
+    "view": "Bekyk"
   },
   "About": {
     "title": "Ons Storie",
-    "subtitle": "Van die Karoo tot jou kraag.",
-    "p1": "Knots of Ties het begin met 'n eenvoudige idee: massaproduksie het geen siel nie. In 'n wêreld van vinnige mode, wou ons stadiger beweeg.",
-    "p2": "Elke das word handgemaak in ons klein ateljee in Suid-Afrika. Ons soek materiaal wat 'n storie vertel—linne wat asemhaal, katoen wat sagter word met tyd.",
+    "subtitle": "Handgemaak vir jou kraag.",
+    "p1": "nots of Ties het begin met 'n eenvoudige idee: massaproduksie het geen siel nie. In 'n wêreld van vinnige mode, wou ons stadiger beweeg.",
+    "p2": "Elke das word handgemaak in ons klein ateljee in Brits, Suid-Afrika. Ons gebruik materiaal wat vir lank sal hou - ontwerpe wat asemhaal, katoen wat sagter word met tyd.",
     "promiseTitle": "Die Belofte",
-    "promiseText": "As 'n knoop ooit loskom, stuur dit terug. Ons maak hierdie dasse om 'n leeftyd te hou."
+    "promiseText": "As 'n steek ooit loskom, stuur dit terug. Ons vervaardig hierdie dasse om 'n leeftyd lank te hou."
+  },
+  "Cart": {
+    "title": "Jou Mandjie",
+    "empty": "Jou mandjie is leeg.",
+    "continue": "Gaan voort met inkopies",
+    "qty": "Hvl",
+    "remove": "Verwyder",
+    "subtotal": "Subtotaal",
+    "shippingNote": "Versending en belasting word by die betaalpunt bereken.",
+    "checkout": "Betaal"
   }
 }

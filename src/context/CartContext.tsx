@@ -20,7 +20,7 @@ interface CartContextType {
   total: number;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (item: Omit<CartItem, 'quantity'>) => void;
+  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
   removeItem: (id: string) => void;
 }
 
@@ -48,19 +48,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isMounted]);
 
   // Logic: Add Item
-  const addItem = (newItem: Omit<CartItem, 'quantity'>) => {
+  const addItem = (newItem: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
     setItems((current) => {
       const existing = current.find((i) => i.id === newItem.id);
+      // specific quantity or default to 1
+      const qtyToAdd = newItem.quantity || 1; 
+
       if (existing) {
-        // Increment quantity if it already exists
         return current.map((i) =>
-          i.id === newItem.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === newItem.id ? { ...i, quantity: i.quantity + qtyToAdd } : i
         );
       }
-      // Add new item
-      return [...current, { ...newItem, quantity: 1 }];
+      return [...current, { ...newItem, quantity: qtyToAdd }];
     });
-    setIsOpen(true); // Auto-open cart when adding
+    setIsOpen(true);
   };
 
   // Logic: Remove Item

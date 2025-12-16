@@ -1,12 +1,13 @@
 import { defineQuery } from "next-sanity";
 
-// 1. HOMEPAGE QUERY (The List) - No parameters required
+// 1. HOMEPAGE/SHOP QUERY (The List)
+// Logic: We grab the FIRST active variant's image to use as the "Cover Image".
 export const PRODUCTS_QUERY = defineQuery(`*[_type == "product"]{
   _id,
   "slug": slug.current,
   title,
   price,
-  images[]{
+  "images": variants[active == true][0].images[]{
     asset->{
       _id,
       url,
@@ -15,17 +16,22 @@ export const PRODUCTS_QUERY = defineQuery(`*[_type == "product"]{
   }
 }`);
 
-// 2. SINGLE PRODUCT QUERY (The Detail) - Requires $slug
+// 2. SINGLE PRODUCT QUERY (The Detail)
+// Logic: We fetch ALL active variants so the user can switch between them.
 export const PRODUCT_QUERY = defineQuery(`*[_type == "product" && slug.current == $slug][0]{
   _id,
   title,
   price,
   fabricStory,
-  images[]{
-    asset->{
-      _id,
-      url,
-      metadata { dimensions }
+  "variants": variants[active == true]{
+    colorName,
+    colorHex,
+    images[]{
+      asset->{
+        _id,
+        url,
+        metadata { dimensions }
+      }
     }
   },
   options[]{
@@ -34,20 +40,6 @@ export const PRODUCT_QUERY = defineQuery(`*[_type == "product" && slug.current =
     values[]{
       label,
       priceModifier
-    }
-  }
-}`);
-
-// Fetch just 3 items to serve as visual representatives for categories
-export const HOME_FEATURED_QUERY = defineQuery(`*[_type == "product"][0..2]{
-  _id,
-  "slug": slug.current,
-  title,
-  images[]{
-    asset->{
-      _id,
-      url,
-      metadata { dimensions }
     }
   }
 }`);

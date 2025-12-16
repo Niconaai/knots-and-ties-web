@@ -1,9 +1,10 @@
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { HOME_FEATURED_QUERY } from "@/sanity/lib/queries"; // <--- Use new query
+//import { HOME_FEATURED_QUERY } from "@/sanity/lib/queries"; // <--- Use new query
 import { urlFor } from "@/sanity/lib/image";
 import { Link } from "@/routing";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { PRODUCTS_QUERY } from "@/sanity/lib/queries";
 
 export default async function HomePage({
   params,
@@ -14,7 +15,7 @@ export default async function HomePage({
   const t = await getTranslations('Home');
   
   // We fetch 3 random products to use as visuals for our category "Tiles"
-  const featured = await sanityFetch({ query: HOME_FEATURED_QUERY });
+  const featured = await sanityFetch({ query: PRODUCTS_QUERY });
 
   return (
     <main className="min-h-screen bg-stone-50">
@@ -57,10 +58,10 @@ export default async function HomePage({
 
       {/* 2. THE TILES (Category Navigation) */}
       {/* This grid mimics the tiled floor of a courtyard. Structured, square, elegant. */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      {/* <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          {/* Tile 1: Skinny */}
+          {/* Tile 1: Skinny 
           <Link href="/shop" className="group relative aspect-[3/4] overflow-hidden bg-stone-200 block">
             {featured[0]?.images?.[0] && (
               <Image 
@@ -78,7 +79,7 @@ export default async function HomePage({
             </div>
           </Link>
 
-          {/* Tile 2: Standard (Middle - usually the largest or central in a courtyard, here equal) */}
+          {/* Tile 2: Standard (Middle - usually the largest or central in a courtyard, here equal) 
           <Link href="/shop" className="group relative aspect-[3/4] overflow-hidden bg-stone-200 block md:-mt-12 shadow-xl z-10">
             {featured[1]?.images?.[0] && (
               <Image 
@@ -96,7 +97,7 @@ export default async function HomePage({
             </div>
           </Link>
 
-          {/* Tile 3: Bow Ties */}
+          {/* Tile 3: Bow Ties 
           <Link href="/shop" className="group relative aspect-[3/4] overflow-hidden bg-stone-200 block">
             {featured[2]?.images?.[0] ? (
               <Image 
@@ -118,7 +119,7 @@ export default async function HomePage({
           </Link>
 
         </div>
-      </section>
+      </section> */}
 
 
       {/* 3. THE VERANDA (The Brand Story Invitation) */}
