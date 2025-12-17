@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
+import { X, ZoomIn } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface Props {
@@ -11,69 +12,81 @@ interface Props {
 }
 
 export default function ProductGallery({ images, title }: Props) {
-  const [index, setIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   if (!images || images.length === 0) return null;
 
+  const openLightbox = (index: number) => {
+    setPhotoIndex(index);
+    setIsOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setIsOpen(false);
+    document.body.style.overflow = '';
+  };
+
   return (
-    // PARENT:
-    // Mobile: flex-col (Stack top/down)
-    // Desktop: flex-row (Side-by-side)
-    // h-full: Fills the sticky container perfectly
-    <div className="flex flex-col lg:flex-row h-full bg-stone-200 pt-24 pb-8 px-4 lg:px-12 gap-6 lg:gap-12 items-start justify-center">
-      
-      {/* 1. THUMBNAILS (The Navigation) */}
-      {/* Mobile: Order 2 (Bottom), Row */}
-      {/* Desktop: Order 1 (Left), Column */}
-      {images.length > 1 && (
-        <div className="order-2 lg:order-1 flex lg:flex-col gap-4 overflow-x-auto lg:overflow-y-auto scrollbar-hide shrink-0 z-10">
-          {images.map((img, i) => (
-            <button
-              key={img.asset._id}
-              onClick={() => setIndex(i)}
+    <>
+      <div className="grid grid-cols-4 gap-4 w-full">
+        {images.map((img, i) => (
+          <div 
+            key={img.asset._id} 
+            className={clsx(
+                "relative aspect-[3/4] bg-white cursor-zoom-in group overflow-hidden border border-stone-100 shadow-sm rounded-sm",
+                // First 2 images span 2 columns (Big), others span 1 (Small)
+                i < 2 ? "col-span-2" : "col-span-1"
+            )}
+            onClick={() => openLightbox(i)}
+          >
+            {/* object-contain prevents zooming/cropping */}
+            <Image
+              src={urlFor(img).width(1000).url()}
+              alt={`${title} - View ${i + 1}`}
+              fill
               className={clsx(
-                "relative w-14 h-14 rounded-full overflow-hidden border-2 transition-all duration-300 shadow-sm flex-shrink-0",
-                index === i 
-                  ? "border-zinc-900 opacity-100 scale-110" 
-                  : "border-stone-400 opacity-60 hover:opacity-100 hover:border-zinc-600"
+                  "object-contain transition-transform duration-500 group-hover:scale-105",
+                  i < 2 ? "p-6" : "p-2"
               )}
-            >
-              <Image
-                src={urlFor(img).width(200).height(200).url()}
-                alt={`Thumbnail ${i + 1}`}
-                fill
-                className="object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* 2. MAIN IMAGE (The Stage) */}
-      {/* Mobile: Order 1 (Top) */}
-      {/* Desktop: Order 2 (Right) */}
-      <div className="order-1 lg:order-2 flex-1 w-full flex items-start justify-center lg:h-full">
-        
-        {/* The Frame */}
-        {/* We use max-h to prevent scrollbars. The box will shrink if the screen is short. */}
-        <div className="relative w-full max-w-lg shadow-xl bg-white p-3 rounded-sm animate-in zoom-in-95 duration-500">
-            {/* Desktop: h-[70vh] max limit to ensure it never overflows the view.
-               Mobile: Aspect ratio keeps it sane.
-            */}
-            <div className="relative w-full aspect-[4/5] lg:h-[65vh] lg:w-auto overflow-hidden bg-stone-50">
-                <Image
-                  src={urlFor(images[index]).width(1200).url()}
-                  alt={`${title} - View ${index + 1}`}
-                  fill
-                  className="object-contain" // Ensures whole tie fits in box
-                  priority
-                  key={index}
-                />
+            />
+            
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+               <ZoomIn className="text-zinc-400 w-6 h-6" />
             </div>
-        </div>
-
+          </div>
+        ))}
       </div>
 
-    </div>
+      {/* Lightbox Modal */}
+      <div 
+        className={clsx(
+            "fixed inset-0 z-[100] bg-white/95 backdrop-blur-sm transition-all duration-300 flex items-center justify-center",
+            isOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"
+        )}
+      >
+        <button 
+            onClick={closeLightbox}
+            className="absolute top-6 right-6 p-2 bg-stone-100 hover:bg-stone-200 rounded-full text-zinc-900 transition-colors z-50 shadow-sm"
+        >
+            <X className="w-6 h-6" />
+        </button>
+
+        {isOpen && (
+            <div className="relative w-full h-full p-4 md:p-8 flex items-center justify-center" onClick={closeLightbox}>
+                <div className="relative w-full h-full max-w-6xl max-h-screen" onClick={(e) => e.stopPropagation()}>
+                    <Image
+                        src={urlFor(images[photoIndex]).width(1600).url()}
+                        alt="Full Screen View"
+                        fill
+                        className="object-contain"
+                        priority
+                    />
+                </div>
+            </div>
+        )}
+      </div>
+    </>
   );
 }
