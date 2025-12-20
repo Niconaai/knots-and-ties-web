@@ -117,7 +117,21 @@ export const product = defineType({
         type: 'object',
         name: 'variant',
         fields: [
-          { name: 'type', type: 'string', title: 'Option Type (e.g. Width)' },
+          {
+            name: 'type',
+            type: 'string',
+            title: 'Option Heading (English)',
+            description: 'e.g. Width, Style, Fabric',
+            validation: Rule => Rule.required()
+          },
+          // 2. NUUT: Die Afrikaanse Opskrif
+          {
+            name: 'headingAf',
+            type: 'string',
+            title: 'Option Heading (Afrikaans)',
+            description: 'bv. Wydte, Styl, Materiaal',
+            validation: Rule => Rule.required()
+          },
           {
             name: 'values',
             title: 'Values',
@@ -125,7 +139,18 @@ export const product = defineType({
             of: [{
               type: 'object',
               fields: [
-                { name: 'label', type: 'string', title: 'Label (e.g. Skinny)' },
+                {
+                  name: 'labelEn',
+                  title: 'Label (English)',
+                  type: 'string',
+                  validation: Rule => Rule.required()
+                },
+                {
+                  name: 'labelAf',
+                  title: 'Label (Afrikaans)',
+                  type: 'string',
+                  validation: Rule => Rule.required()
+                },
                 { name: 'priceModifier', type: 'number', title: 'Price Adder (+R)' }
               ]
             }]

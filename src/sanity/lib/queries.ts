@@ -37,8 +37,10 @@ export const PRODUCT_QUERY = defineQuery(`*[_type == "product" && slug.current =
   options[]{
     _key,
     type,
+    headingAf,
     values[]{
-      label,
+      labelEn,
+      labelAf,
       priceModifier
     }
   }

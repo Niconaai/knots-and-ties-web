@@ -7,13 +7,15 @@ import { Minus, Plus, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type VariantValue = {
-  label: string;
+  labelEn: string;
+  labelAf: string;
   priceModifier: number;
 };
 
 type Option = {
   _key: string;
   type: string;
+  headingAf?: string;
   values: VariantValue[];
 };
 
@@ -34,17 +36,17 @@ interface Props {
   locale: string;
 }
 
-export default function ProductConfigurator({ 
-  productId, 
-  title, 
-  basePrice = 0, 
-  options = [], 
+export default function ProductConfigurator({
+  productId,
+  title,
+  basePrice = 0,
+  options = [],
   variants = [],
   selectedVariantIndex,
   onVariantChange,
-  locale 
+  locale
 }: Props) {
-  
+
   const router = useRouter();
   const { addItem } = useCart();
   const [selections, setSelections] = useState<Record<string, VariantValue>>({});
@@ -83,21 +85,24 @@ export default function ProductConfigurator({
   };
 
   const handleAddToCart = () => {
+    // Helper om die regte taal te kry vir die huidige user
+    const getLabel = (v: VariantValue) => (locale === 'af' ? v.labelAf : v.labelEn);
+
     // Safety: If no variant exists (generic product), use "Standard"
     const colorName = activeVariant ? activeVariant.colorName : 'Standard';
-    
+
     // Only show "Color: Green" text if we actually have a variant
     const colorText = activeVariant ? `${t.color}: ${colorName}` : '';
 
     const techText = Object.entries(selections)
-      .map(([key, val]) => `${key}: ${val.label}`)
+      .map(([key, val]) => `${key}: ${getLabel(val)}`) // <--- GEBRUIK HELPER HIER
       .join(', ');
-    
+
     // Combine cleanly, filtering out empty strings
     const finalOptionsText = [colorText, techText].filter(Boolean).join(', ');
-    
-    // Generate Unique ID: ProductID + ColorName + Options
-    const uniqueId = `${productId}-${colorName}-${Object.values(selections).map(v => v.label).join('-')}`;
+
+    // Generate Unique ID: ProductID + ColorName + English Labels (vir consistency)
+    const uniqueId = `${productId}-${colorName}-${Object.values(selections).map(v => v.labelEn).join('-')}`;
 
     const variantImage = activeVariant?.images?.[0] ? activeVariant.images[0] : null;
 
@@ -125,22 +130,22 @@ export default function ProductConfigurator({
       {/* Color Variants */}
       {variants.length > 0 && activeVariant && (
         <div className="space-y-3">
-           <h4 className="font-serif text-lg text-zinc-900">{t.color}: <span className="text-zinc-500 font-sans text-sm">{activeVariant.colorName}</span></h4>
-           <div className="flex flex-wrap gap-3">
-             {variants.map((variant, idx) => (
-               <button
-                 key={variant.colorName}
-                 onClick={() => onVariantChange(idx)}
-                 className={clsx(
-                   "w-8 h-8 rounded-full border border-stone-300 shadow-sm transition-all duration-200",
-                   "hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-900",
-                   selectedVariantIndex === idx ? "ring-2 ring-offset-2 ring-zinc-900 scale-110" : "opacity-90"
-                 )}
-                 style={{ backgroundColor: variant.colorHex }}
-                 title={variant.colorName}
-               />
-             ))}
-           </div>
+          <h4 className="font-serif text-lg text-zinc-900">{t.color}: <span className="text-zinc-500 font-sans text-sm">{activeVariant.colorName}</span></h4>
+          <div className="flex flex-wrap gap-3">
+            {variants.map((variant, idx) => (
+              <button
+                key={variant.colorName}
+                onClick={() => onVariantChange(idx)}
+                className={clsx(
+                  "w-8 h-8 rounded-full border border-stone-300 shadow-sm transition-all duration-200",
+                  "hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-900",
+                  selectedVariantIndex === idx ? "ring-2 ring-offset-2 ring-zinc-900 scale-110" : "opacity-90"
+                )}
+                style={{ backgroundColor: variant.colorHex }}
+                title={variant.colorName}
+              />
+            ))}
+          </div>
         </div>
       )}
 
@@ -148,22 +153,32 @@ export default function ProductConfigurator({
       <div className="space-y-6">
         {options?.map((option) => (
           <div key={option._key} className="space-y-3">
-            <h4 className="font-serif text-lg text-zinc-900">{option.type}</h4>
+            <h4 className="font-serif text-lg text-zinc-900">{(locale === 'af' && option.headingAf) ? option.headingAf  : option.type}</h4>
             <div className="flex flex-wrap gap-2">
               {option.values.map((val) => {
-                const isSelected = selections[option.type]?.label === val.label;
+                // LOGIKA: Bepaal watter label om te wys
+                const displayLabel = locale === 'af' ? val.labelAf : val.labelEn;
+
+                // LOGIKA: Kyk of hy gekies is deur die Engelse label te vergelyk (veiliger as objects)
+                const isSelected = selections[option.type]?.labelEn === val.labelEn;
+
                 return (
                   <button
-                    key={val.label}
+                    key={val.labelEn} // Gebruik English label as unieke key
                     onClick={() => handleSelect(option.type, val)}
                     className={clsx(
                       "px-4 py-2 border transition-all duration-200 text-sm",
-                      isSelected 
-                        ? 'bg-zinc-900 text-stone-50 border-zinc-900' 
+                      isSelected
+                        ? 'bg-zinc-900 text-stone-50 border-zinc-900'
                         : 'bg-transparent text-zinc-600 border-zinc-300 hover:border-zinc-900'
                     )}
                   >
-                    {val.label} {val.priceModifier > 0 && `(+R${val.priceModifier})`}
+                    {displayLabel} {val.priceModifier !== 0 && (
+                      <span className="ml-1 opacity-75">
+                        {/* Logika: As dit > 0 is, wys '+', anders wys '-' */}
+                        ({val.priceModifier > 0 ? '+' : '-'}R{Math.abs(val.priceModifier)})
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -176,14 +191,14 @@ export default function ProductConfigurator({
       <div className="space-y-3">
         <h4 className="font-serif text-lg text-zinc-900">{t.qty}</h4>
         <div className="flex items-center w-32 border border-stone-300">
-          <button 
+          <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
             className="p-3 hover:bg-stone-100 transition-colors text-zinc-600"
           >
             <Minus className="w-4 h-4" />
           </button>
           <span className="flex-1 text-center font-medium text-zinc-900">{quantity}</span>
-          <button 
+          <button
             onClick={() => setQuantity(quantity + 1)}
             className="p-3 hover:bg-stone-100 transition-colors text-zinc-600"
           >

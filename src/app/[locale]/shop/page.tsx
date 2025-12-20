@@ -32,12 +32,12 @@ export default async function ShopPage({
         {products.map((product: any) => (
           <Link key={product._id} href={`/shop/${product.slug}`} className="group block space-y-4">
             <div className="aspect-[4/5] relative bg-stone-200 overflow-hidden">
-              {product.images?.[0] && (
+              {product.images?.[4] && (
                 <Image
-                  src={urlFor(product.images[0]).width(500).height(625).url()}
+                  src={urlFor(product.images[4]).width(500).height(625).url()}
                   alt={product.title?.[locale === 'af' ? 'af' : 'en']}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-contain transition-transform duration-700 group-hover:scale-105"
                 />
               )}
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
