@@ -6,10 +6,13 @@ import Image from 'next/image';
 import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
 import { urlFor } from '@/sanity/lib/image';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function CartDrawer() {
   const t = useTranslations('Cart'); // <--- Hook
   const { items, isOpen, closeCart, removeItem, total } = useCart();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Prevent body scroll
   if (typeof window !== 'undefined') {
@@ -112,7 +115,12 @@ export default function CartDrawer() {
 
               <button
                 className="w-full py-4 bg-zinc-900 text-stone-50 font-bold tracking-widest uppercase hover:bg-zinc-800 transition-colors"
-                onClick={() => alert("Checkout Phase starting soon!")}
+                onClick={() => {
+                  closeCart()
+                  // determine locale from current pathname (/en/..., /af/...)
+                  const seg = pathname?.split('/')?.[1] || 'en'
+                  router.push(`/${seg}/checkout`)
+                }}
               >
                 {t('checkout')} {/* <--- Translated */}
               </button>

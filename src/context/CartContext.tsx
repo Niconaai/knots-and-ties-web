@@ -22,6 +22,7 @@ interface CartContextType {
   closeCart: () => void;
   addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
   removeItem: (id: string) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -69,6 +70,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((current) => current.filter((i) => i.id !== id));
   };
 
+  // Logic: Clear Cart
+  const clearCart = () => {
+    setItems([]);
+  };
+
   // Calculate Total
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
@@ -82,6 +88,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         closeCart: () => setIsOpen(false),
         addItem,
         removeItem,
+        clearCart,
       }}
     >
       {children}
