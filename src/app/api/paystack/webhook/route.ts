@@ -99,8 +99,8 @@ export async function POST(request: Request) {
       try {
         // sendOrderConfirmation expects order, items, shipping, language
         await sendOrderConfirmation(order, items, shipping_details, (language_preference as 'en' | 'af'))
-      } catch (err) {
-        console.error('Email send failed', err)
+      } catch {
+        // Silent fail - email errors should not fail the webhook
       }
     }
 

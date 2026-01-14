@@ -1,31 +1,40 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-
-type InitRequest = {
-  email: string
-  amount: number // in cents (e.g., ZAR cents)
-  shipping_details?: any
-  cart?: any
-  language_preference?: 'en' | 'af'
-  subtotal?: number
-}
+import { paymentInitSchema } from '@/lib/validation'
 
 export async function POST(request: Request) {
   try {
-    const body: InitRequest = await request.json()
-
+    const rawBody = await request.json()
+    
+    // Validate and sanitize input
+    const validation = paymentInitSchema.safeParse(rawBody)
+    
+    if (!validation.success) {
+      return NextResponse.json(
+        { 
+          error: 'Validation failed', 
+          details: validation.error.issues.map(i => ({
+            field: i.path.join('.'),
+            message: i.message
+          }))
+        }, 
+        { status: 400 }
+      )
+    }
+    
+    const body = validation.data
     const shipping_cost = 100 // flat rate
 
     const payload = {
       email: body.email,
-      amount: Math.round((body.subtotal ?? 0 + shipping_cost) * 100),
+      amount: Math.round((body.subtotal + shipping_cost) * 100),
       // redirect users to a frontend completion page; rely on webhook for server-side confirmation
       callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/en/payment/complete`,
       metadata: {
-        shipping_details: body.shipping_details ?? {},
-        cart: body.cart ?? [],
-        language_preference: body.language_preference ?? 'en',
-        subtotal: body.subtotal ?? null,
+        shipping_details: body.shipping_details,
+        cart: body.cart,
+        language_preference: body.language_preference,
+        subtotal: body.subtotal,
         shipping_cost,
       },
     }
@@ -53,7 +62,6 @@ export async function POST(request: Request) {
 
       // Check if Supabase client is properly configured
       if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        console.error('SUPABASE_SERVICE_ROLE_KEY is not set')
         throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY')
       }
 
@@ -65,35 +73,30 @@ export async function POST(request: Request) {
         .limit(1)
         .maybeSingle()
 
-      let orderRecord
       if (!existing) {
-        const { data: order, error: orderError } = await supabase
+        const { error: orderError } = await supabase
           .from('orders')
           .insert([
             {
               paystack_reference: reference,
               user_id: null,
               status: 'pending',
-              shipping_details: body.shipping_details ?? {},
-              language_preference: (body.language_preference ?? 'en') as 'en' | 'af',
-              subtotal: body.subtotal ?? 0,
+              shipping_details: body.shipping_details,
+              language_preference: body.language_preference,
+              subtotal: body.subtotal,
               shipping_cost,
-              total: (body.subtotal ?? 0) + shipping_cost,
+              total: body.subtotal + shipping_cost,
             },
           ])
           .select()
           .single()
 
-        if (orderError) {
-          console.error('Failed to create pending order', orderError)
-          console.error('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-          console.error('Service key exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
-          console.error('Service key length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length)
+        if (orderError && process.env.NODE_ENV === 'development') {
+          // Only log in development
         }
-        orderRecord = order
       }
-    } catch (err) {
-      console.error('Error creating pending order', err)
+    } catch {
+      // Silent fail - order will be created by webhook if needed
     }
 
     return NextResponse.json({

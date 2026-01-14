@@ -46,7 +46,7 @@ export async function sendOrderConfirmation(
 
     return await sendEmail(to, tpl.subject, tpl.html)
   } catch (err) {
-    console.error('Failed to send order confirmation email', err)
+    // Re-throw to let caller handle
     throw err
   }
 }

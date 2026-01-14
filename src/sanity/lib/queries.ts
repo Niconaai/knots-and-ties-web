@@ -2,10 +2,11 @@ import { defineQuery } from "next-sanity";
 
 // 1. HOMEPAGE/SHOP QUERY (The List)
 // Logic: We grab the FIRST active variant's image to use as the "Cover Image".
+// Title is bilingual - components should access title.en or title.af based on locale
 export const PRODUCTS_QUERY = defineQuery(`*[_type == "product"]{
   _id,
   "slug": slug.current,
-  title,
+  "title": title,
   price,
   "images": variants[active == true][0].images[]{
     asset->{
@@ -43,5 +44,40 @@ export const PRODUCT_QUERY = defineQuery(`*[_type == "product" && slug.current =
       labelAf,
       priceModifier
     }
+  }
+}`);
+
+// 3. SITE SETTINGS QUERY (Hero images, etc.)
+// Singleton document - only one exists
+export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings"][0]{
+  homeHero {
+    image {
+      asset->{
+        _id,
+        url,
+        metadata { dimensions }
+      }
+    },
+    imageAlt
+  },
+  aboutHero {
+    image {
+      asset->{
+        _id,
+        url,
+        metadata { dimensions }
+      }
+    },
+    imageAlt
+  },
+  shopHero {
+    image {
+      asset->{
+        _id,
+        url,
+        metadata { dimensions }
+      }
+    },
+    imageAlt
   }
 }`);

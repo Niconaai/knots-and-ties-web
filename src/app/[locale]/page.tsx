@@ -1,10 +1,9 @@
 import { sanityFetch } from "@/sanity/lib/fetch";
-//import { HOME_FEATURED_QUERY } from "@/sanity/lib/queries"; // <--- Use new query
 import { urlFor } from "@/sanity/lib/image";
 import { Link } from "@/routing";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { PRODUCTS_QUERY } from "@/sanity/lib/queries";
+import { PRODUCTS_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 
 export default async function HomePage({
   params,
@@ -14,20 +13,27 @@ export default async function HomePage({
   const { locale } = await params;
   const t = await getTranslations('Home');
   
-  // We fetch 3 random products to use as visuals for our category "Tiles"
-  const featured = await sanityFetch({ query: PRODUCTS_QUERY });
+  // Fetch site settings for hero image and products for fallback/tiles
+  const [settings, featured] = await Promise.all([
+    sanityFetch({ query: SITE_SETTINGS_QUERY }),
+    sanityFetch({ query: PRODUCTS_QUERY }),
+  ]);
+
+  // Use CMS hero image or fallback to first product image
+  const heroImage = settings?.homeHero?.image || featured[0]?.images?.[0];
+  const heroAlt = settings?.homeHero?.imageAlt?.[locale] || 'Knots & Ties Hero';
 
   return (
     <main className="min-h-screen bg-stone-50">
       
       {/* 1. THE ARCHWAY (Hero Section) */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image - Ideally a lifestyle shot. Using the first product as placeholder for now */}
-        {featured[0]?.images?.[0] && (
+        {/* Background Image - From CMS or product fallback */}
+        {heroImage && (
            <div className="absolute inset-0">
              <Image
-               src={urlFor(featured[0].images[0]).width(1200).url()}
-               alt="Hero Background"
+               src={urlFor(heroImage).width(1920).url()}
+               alt={heroAlt}
                fill
                className="object-cover opacity-90"
                priority

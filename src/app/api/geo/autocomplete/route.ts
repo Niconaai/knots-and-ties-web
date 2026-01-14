@@ -1,15 +1,21 @@
 import { NextResponse } from 'next/server'
+import { autocompleteSchema, sanitizeString } from '@/lib/validation'
 
 export async function POST(request: Request) {
-  const { input } = await request.json()
+  const rawBody = await request.json()
+  
+  // Validate input
+  const validation = autocompleteSchema.safeParse(rawBody)
+  
+  if (!validation.success) {
+    return NextResponse.json({ predictions: [] })
+  }
+  
+  const input = sanitizeString(validation.data.input)
   const key = process.env.GOOGLE_MAPS_API_KEY
 
   if (!key) {
     return NextResponse.json({ error: 'Missing GOOGLE_MAPS_API_KEY' }, { status: 500 })
-  }
-
-  if (!input || input.trim().length < 3) {
-    return NextResponse.json({ predictions: [] })
   }
 
   // Use Geocoding API for address search since it's simpler and already enabled
@@ -22,9 +28,8 @@ export async function POST(request: Request) {
     
     // Check for API errors
     if (data.status === 'REQUEST_DENIED') {
-      console.error('Google API Error:', data.error_message)
       return NextResponse.json({ 
-        error: `API Error: ${data.error_message || 'Please check API key'}`, 
+        error: 'Address lookup unavailable', 
         predictions: [] 
       }, { status: 403 })
     }
@@ -50,8 +55,7 @@ export async function POST(request: Request) {
       predictions,
       status: data.status
     })
-  } catch (error) {
-    console.error('Autocomplete error:', error)
+  } catch {
     return NextResponse.json({ error: 'Autocomplete failed', predictions: [] }, { status: 500 })
   }
 }

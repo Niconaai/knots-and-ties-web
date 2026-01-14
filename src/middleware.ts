@@ -22,5 +22,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ['/', '/(af|en)/:path*']
+  // Exclude API routes, static files, and _next
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*|studio).*)'
+  ]
 };

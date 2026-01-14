@@ -133,7 +133,6 @@ export default function CheckoutForm() {
       const data = await res.json()
       
       if (!res.ok) {
-        console.error('Autocomplete API error:', data.error)
         setMapHelperText(data.error || 'Address lookup failed')
         setMapStatus('error')
         setSuggestions([])
@@ -144,12 +143,8 @@ export default function CheckoutForm() {
       if (data.predictions) {
         setSuggestions(data.predictions)
         setShowDropdown(data.predictions.length > 0)
-        if (data.predictions.length === 0) {
-          console.log('No predictions returned for:', input)
-        }
       }
-    } catch (err) {
-      console.error('Autocomplete failed', err)
+    } catch {
       setMapHelperText('Network error - could not reach address service')
       setMapStatus('error')
     }
@@ -217,7 +212,6 @@ export default function CheckoutForm() {
       setAllowManualEntry(false)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : typeof err === 'string' ? err : 'Place lookup failed'
-      console.error('Place details failed', err)
       setMapStatus('error')
       setMapHelperText(message)
     }
