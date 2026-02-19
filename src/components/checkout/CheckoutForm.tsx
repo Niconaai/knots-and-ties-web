@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { useCart } from '@/context/CartContext'
+import { useAuth } from '@/context/AuthContext'
 import { useLocale, useTranslations } from 'next-intl'
 
 type Coordinates = {
@@ -39,6 +40,7 @@ const isValidPhone = (value: string) => PHONE_REGEX.test(value)
 
 export default function CheckoutForm() {
   const { items, total } = useCart()
+  const { user, profile } = useAuth()
   const t = useTranslations('Checkout')
   const locale = useLocale()
   const [shipping, setShipping] = useState<ShippingDetails>({
@@ -63,6 +65,18 @@ export default function CheckoutForm() {
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Auto-fill user data if logged in
+  useEffect(() => {
+    if (user && profile) {
+      setShipping((prev) => ({
+        ...prev,
+        full_name: profile.full_name || '',
+        email: profile.email || user.email || '',
+        phone: profile.phone || '',
+      }))
+    }
+  }, [user, profile])
 
   // Close dropdown when clicking outside
   useEffect(() => {

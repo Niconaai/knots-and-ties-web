@@ -31,14 +31,31 @@ export const product = defineType({
       options: { source: 'title.en' },
     }),
 
-    // 4. Base Price
+    // 4. Category
+    defineField({
+      name: 'category',
+      title: 'Product Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Ties / Dasse', value: 'ties' },
+          { title: 'Clothing / Kleding', value: 'clothing' },
+          { title: 'Accessories / Bykomstighede', value: 'accessories' }
+        ],
+        layout: 'radio'
+      },
+      validation: (Rule) => Rule.required(),
+      description: 'Select the category for this product.'
+    }),
+
+    // 5. Base Price
     defineField({
       name: 'price',
       title: 'Base Price (ZAR)',
       type: 'number',
     }),
 
-    // 5. COLOR VARIANTS (New Core Logic)
+    // 6. COLOR VARIANTS (New Core Logic)
     defineField({
       name: 'variants',
       title: 'Color Variants',
@@ -97,7 +114,7 @@ export const product = defineType({
       validation: (Rule) => Rule.required().min(1),
     }),
 
-    // 6. Fabric Story
+    // 7. Fabric Story
     defineField({
       name: 'fabricStory',
       title: 'Fabric Story',
@@ -108,7 +125,7 @@ export const product = defineType({
       ],
     }),
 
-    // 7. Technical Options (Widths, etc)
+    // 8. Technical Options (Widths, etc)
     defineField({
       name: 'options',
       title: 'Technical Options',

@@ -2,10 +2,10 @@
 
 import { Link } from '@/routing';
 import { Facebook, Instagram } from 'lucide-react';
-import { useTranslations } from 'next-intl'; // <--- Import
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
-  const t = useTranslations('Footer'); // <--- Hook
+  const t = useTranslations('Footer');
   const currentYear = new Date().getFullYear();
 
   return (
@@ -17,10 +17,9 @@ export default function Footer() {
           <div className="md:col-span-4 space-y-6">
             <h3 className="text-2xl font-serif">Knots of Ties</h3>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
-              {t('description')} {/* <--- Translated */}
+              {t('description')}
             </p>
             <div className="flex gap-4">
-               {/* Icons stay same */}
                <a href="#" className="hover:text-accent-rust transition"><Instagram className="w-5 h-5" /></a>
                <a href="#" className="hover:text-accent-rust transition"><Facebook className="w-5 h-5" /></a>
             </div>
@@ -30,9 +29,10 @@ export default function Footer() {
           <div className="md:col-span-2 md:col-start-7 space-y-6">
             <h4 className="text-sm font-bold uppercase tracking-widest text-zinc-500">{t('shop')}</h4>
             <ul className="space-y-3 text-sm text-zinc-300">
-              <li><Link href="/shop" className="hover:text-white transition">{t('allTies')}</Link></li>
-              <li><Link href="/shop" className="hover:text-white transition">{t('skinny')}</Link></li>
-              <li><Link href="/shop" className="hover:text-white transition">{t('bow')}</Link></li>
+              <li><Link href="/shop" className="hover:text-white transition">{t('allProducts')}</Link></li>
+              <li><Link href="/shop/ties" className="hover:text-white transition">{t('ties')}</Link></li>
+              <li><Link href="/shop/clothing" className="hover:text-white transition">{t('clothing')}</Link></li>
+              <li><Link href="/shop/accessories" className="hover:text-white transition">{t('accessories')}</Link></li>
             </ul>
           </div>
 

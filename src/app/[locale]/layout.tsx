@@ -4,6 +4,7 @@ import { playfair, inter } from '@/app/fonts';
 import '../globals.css';
 import LanguageModal from '@/components/LanguageModal';
 import { CartProvider } from '@/context/CartContext';
+import { AuthProvider } from '@/context/AuthContext';
 import CartDrawer from '@/components/cart/CartDrawer';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -22,11 +23,11 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${playfair.variable} ${inter.variable}`}>
       <body>
         <NextIntlClientProvider messages={messages}>
-
-          <CartProvider>
-            <LanguageModal />
-            <CartDrawer />
-            <Navbar />
+          <AuthProvider>
+            <CartProvider>
+              <LanguageModal />
+              <CartDrawer />
+              <Navbar />
 
             <div className="pt-16 min-h-screen flex flex-col">
               <div className="flex-1">
@@ -35,8 +36,8 @@ export default async function LocaleLayout({
               <Footer />
             </div>
 
-          </CartProvider>
-
+            </CartProvider>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

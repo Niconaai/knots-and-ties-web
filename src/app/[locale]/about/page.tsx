@@ -32,13 +32,14 @@ export default async function AboutPage({
         )}
         <div className="absolute inset-0 bg-zinc-900/10 z-10" /> 
         <div className="relative z-20 text-center space-y-6 px-6">
-          <h1 className="text-5xl md:text-7xl font-serif text-zinc-900">{t('title')}</h1>
-          <p className="text-lg md:text-xl text-zinc-700 italic font-medium">{t('subtitle')}</p>
+          {/* <h1 className="text-5xl md:text-7xl font-serif text-zinc-900">{t('title')}</h1>
+          <p className="text-lg md:text-xl text-zinc-700 italic font-medium">{t('subtitle')}</p> */}
         </div>
       </section>
 
       {/* Content */}
       <section className="max-w-3xl mx-auto px-6 py-24 space-y-8 text-lg text-zinc-600 leading-relaxed">
+        <h1 className="text-5xl md:text-7xl font-serif text-center text-zinc-900">{t('title')}</h1>
         <p>
           <span className="text-4xl float-left mr-4 mt-[-10px] font-serif text-zinc-900">K</span>
           {t('p1')}
